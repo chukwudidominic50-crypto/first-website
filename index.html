@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>THRIFT HAVEN | Vintage Fashion</title>
 
 <style>
@@ -21,7 +22,7 @@ body {
 header {
     background: #171717;
     color: white;
-    padding: 22px 8%;
+    padding: 22px 7%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,12 +37,20 @@ header {
 nav a {
     color: white;
     text-decoration: none;
-    margin-left: 25px;
+    margin-left: 20px;
+}
+
+.cart-button {
+    background: #d6a85c;
+    border: none;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .hero {
-    min-height: 480px;
-    background: linear-gradient(#0007,#0007),
+    min-height: 450px;
+    background: linear-gradient(#0008,#0008),
     url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1600')
     center/cover;
     display: flex;
@@ -51,14 +60,14 @@ nav a {
 }
 
 .hero h1 {
-    font-size: 55px;
+    font-size: 50px;
     max-width: 550px;
     margin-bottom: 20px;
 }
 
 .hero p {
+    margin-bottom: 25px;
     font-size: 18px;
-    margin-bottom: 30px;
 }
 
 .button {
@@ -76,13 +85,13 @@ nav a {
 
 .section h2 {
     text-align: center;
-    font-size: 32px;
     margin-bottom: 35px;
+    font-size: 32px;
 }
 
 .products {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
     gap: 25px;
 }
 
@@ -106,13 +115,91 @@ nav a {
     color: #777;
 }
 
-.product a {
+.product button {
     margin-left: 15px;
     background: #171717;
     color: white;
+    border: none;
     padding: 12px 18px;
-    text-decoration: none;
-    display: inline-block;
+    cursor: pointer;
+}
+
+.product button:hover {
+    background: #d6a85c;
+    color: black;
+}
+
+/* CART PANEL */
+
+.cart {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 380px;
+    max-width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    padding: 25px;
+    transition: 0.4s;
+    box-shadow: -5px 0 20px #0002;
+    overflow-y: auto;
+}
+
+.cart.active {
+    right: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.close {
+    border: none;
+    background: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.cart-item button {
+    padding: 5px 10px;
+    margin: 8px 3px;
+    cursor: pointer;
+}
+
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 25px 0;
+}
+
+.checkout {
+    width: 100%;
+    background: #171717;
+    color: white;
+    border: none;
+    padding: 16px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0007;
+    z-index: 999;
+}
+
+.overlay.active {
+    display: block;
 }
 
 .about {
@@ -131,16 +218,16 @@ footer {
 
 @media(max-width:600px) {
     header {
-        flex-direction: column;
+        flex-wrap: wrap;
         gap: 15px;
     }
 
     nav a {
-        margin: 8px;
+        margin: 5px;
     }
 
     .hero h1 {
-        font-size: 38px;
+        font-size: 36px;
     }
 }
 </style>
@@ -150,10 +237,13 @@ footer {
 
 <header>
     <div class="logo">THRIFT HAVEN.</div>
+
     <nav>
         <a href="#home">Home</a>
         <a href="#shop">Shop</a>
-        <a href="#about">About</a>
+        <button class="cart-button" onclick="openCart()">
+            🛒 Cart (<span id="cart-count">0</span>)
+        </button>
     </nav>
 </header>
 
@@ -162,3 +252,214 @@ footer {
         <h1>STYLE THAT DOESN'T BREAK THE BANK.</h1>
         <p>Discover unique thrift pieces. Look good. Spend less.</p>
         <a href="#shop" class="button">SHOP COLLECTION</a>
+    </div>
+</section>
+
+<section class="section" id="shop">
+
+    <h2>OUR COLLECTION</h2>
+
+    <div class="products">
+
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600">
+            <h3>Classic Vintage Tee</h3>
+            <p>₦5,000</p>
+            <button onclick="addToCart('Classic Vintage Tee',5000)">
+                Add to Cart
+            </button>
+        </div>
+
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=600">
+            <h3>Vintage Denim</h3>
+            <p>₦8,000</p>
+            <button onclick="addToCart('Vintage Denim',8000)">
+                Add to Cart
+            </button>
+        </div>
+
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600">
+            <h3>Classic Jacket</h3>
+            <p>₦12,000</p>
+            <button onclick="addToCart('Classic Jacket',12000)">
+                Add to Cart
+            </button>
+        </div>
+
+        <div class="product">
+            <img src="https://images.unsplash.com/photo-1544441893-675973e31985?w=600">
+            <h3>Streetwear Collection</h3>
+            <p>₦7,000</p>
+            <button onclick="addToCart('Streetwear Collection',7000)">
+                Add to Cart
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- SHOPPING CART -->
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<div class="cart" id="cart">
+
+    <div class="cart-header">
+        <h2>Your Shopping Cart</h2>
+        <button class="close" onclick="closeCart()">×</button>
+    </div>
+
+    <div id="cart-items">
+        Your cart is empty.
+    </div>
+
+    <div class="total">
+        Total: ₦<span id="total">0</span>
+    </div>
+
+    <button class="checkout" onclick="checkout()">
+        CHECKOUT ON WHATSAPP
+    </button>
+
+</div>
+
+<section class="about" id="about">
+    <h2>ABOUT THRIFT HAVEN</h2>
+    <p>
+        Great style shouldn't cost a fortune.
+        Discover affordable, unique and fashionable
+        thrift pieces for your wardrobe.
+    </p>
+</section>
+
+<footer>
+    <p>© 2026 THRIFT HAVEN. All Rights Reserved.</p>
+    <p>Affordable fashion. Timeless style.</p>
+</footer>
+
+<script>
+
+let cart = [];
+
+function addToCart(name, price) {
+
+    let item = cart.find(product => product.name === name);
+
+    if (item) {
+        item.quantity++;
+    } else {
+        cart.push({
+            name: name,
+            price: price,
+            quantity: 1
+        });
+    }
+
+    updateCart();
+    openCart();
+}
+
+function updateCart() {
+
+    let items = document.getElementById("cart-items");
+    let total = 0;
+    let count = 0;
+
+    items.innerHTML = "";
+
+    if (cart.length === 0) {
+        items.innerHTML = "Your cart is empty.";
+    }
+
+    cart.forEach((item, index) => {
+
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+        items.innerHTML += `
+            <div class="cart-item">
+
+                <h3>${item.name}</h3>
+
+                <p>₦${item.price.toLocaleString()}</p>
+
+                <button onclick="changeQuantity(${index},-1)">−</button>
+
+                ${item.quantity}
+
+                <button onclick="changeQuantity(${index},1)">+</button>
+
+                <button onclick="removeItem(${index})">Remove</button>
+
+            </div>
+        `;
+    });
+
+    document.getElementById("total").textContent =
+        total.toLocaleString();
+
+    document.getElementById("cart-count").textContent = count;
+}
+
+function changeQuantity(index, amount) {
+
+    cart[index].quantity += amount;
+
+    if (cart[index].quantity <= 0) {
+        cart.splice(index,1);
+    }
+
+    updateCart();
+}
+
+function removeItem(index) {
+    cart.splice(index,1);
+    updateCart();
+}
+
+function openCart() {
+    document.getElementById("cart").classList.add("active");
+    document.getElementById("overlay").classList.add("active");
+}
+
+function closeCart() {
+    document.getElementById("cart").classList.remove("active");
+    document.getElementById("overlay").classList.remove("active");
+}
+
+function checkout() {
+
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    let message = "Hello THRIFT HAVEN! I want to order:\n\n";
+    let total = 0;
+
+    cart.forEach(item => {
+
+        message += item.name + " x " + item.quantity +
+        " = ₦" + (item.price * item.quantity).toLocaleString() + "\n";
+
+        total += item.price * item.quantity;
+    });
+
+    message += "\nTotal: ₦" + total.toLocaleString();
+
+    // Replace with your WhatsApp number.
+    let phone = "234XXXXXXXXXX";
+
+    window.open(
+        "https://wa.me/" + phone + "?text=" +
+        encodeURIComponent(message),
+        "_blank"
+    );
+}
+
+</script>
+
+</body>
+</html>
